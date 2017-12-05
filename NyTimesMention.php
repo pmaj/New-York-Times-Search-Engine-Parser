@@ -36,11 +36,6 @@ interface NyTimesMention
      * @return string|null
      */
     public function getThumbnail();
+
 }
 
-/**
- * Created by PhpStorm.
- * User: mejdzor
- * Date: 02.12.2017
- * Time: 22:31
- */
