@@ -13,11 +13,11 @@ require_once "NyTimesMention.php";
 class NyTimesQuery implements NyTimesMention
 {
 
-    private $web_url;
-    private $snippet;
-    private $pub_date;
-    private $main;
-    private $thumbnail_url;
+//    private $web_url;
+//    private $snippet;
+//    private $pub_date;
+//    private $main;
+//    private $thumbnail_url;
 
     public function search()
     {
@@ -50,7 +50,7 @@ class NyTimesQuery implements NyTimesMention
         var_dump($array_with_data);
         return $array_with_data;
     }
-    
+
     public function getUrl()
     {
 
