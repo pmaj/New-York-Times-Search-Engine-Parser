@@ -19,23 +19,6 @@ class NyTimesQuery implements NyTimesMention
     private $main;
     private $thumbnail_url;
 
-    /**
-     * NyTimesQuery constructor.
-     * @param $web_url
-     * @param $snippet
-     * @param $pub_date
-     * @param $main
-     * @param $thumbnail_url
-     */
-    public function __construct()
-    {
-        $this->web_url = $this->search()[0]['web_url'];
-        $this->snippet = $this->search()[0]['snippet'];
-        $this->pub_date = $this->search()[0]['pub_date'];
-        $this->main = $this->search()[0]['main'];
-        $this->thumbnail_url = $this->search()[0]['thumbnail_url'];
-    }
-
     public function search()
     {
         $curl = curl_init();
@@ -64,10 +47,10 @@ class NyTimesQuery implements NyTimesMention
                 $array_with_data[$i]['thumbnail_url'] = null;
             }
         }
-
+        var_dump($array_with_data);
         return $array_with_data;
     }
-
+    
     public function getUrl()
     {
 
@@ -93,13 +76,10 @@ class NyTimesQuery implements NyTimesMention
         // TODO: Implement getThumbnail() method.
     }
 
-
-
 }
 
 $obama = new NyTimesQuery();
-var_dump($obama);
-
+$obama->search();
 
 
 
