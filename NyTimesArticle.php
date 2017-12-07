@@ -50,6 +50,7 @@ class NyTimesArticle implements NyTimesMention
 
     public function createArticles() {
         $array_with_data = [];
+        $new_article = new NyTimesCollection();
         for($i = 0; $i <= 9; $i++) {
 
             if ($this->searchArticles()->response->docs[$i]->multimedia != null) {
@@ -57,17 +58,16 @@ class NyTimesArticle implements NyTimesMention
             } else {
                 $array_with_data[$i]['thumbnail_url'] = "";
             }
-
-            $new_article = new NyTimesCollection();
-            $new_article = new NyTimesArticle(
+            $new_article -> addArticle(new NyTimesArticle(
                 $this->searchArticles()->response->docs[$i]->web_url,
                 $this->searchArticles()->response->docs[$i]->snippet,
                 $this->searchArticles()->response->docs[$i]->pub_date,
                 $this->searchArticles()->response->docs[$i]->headline->main,
                 $array_with_data[$i]['thumbnail_url']
-            );
-            var_dump($new_article);
+            ));
         }
+        var_dump($new_article);
+        return $new_article;
     }
 
 
