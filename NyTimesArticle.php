@@ -42,27 +42,10 @@ class NyTimesArticle implements NyTimesMention
         $url = "https://query.nytimes.com/svc/add/v1/sitesearch.json?q=" . $phrase . "&page=2&facet=true";
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_COOKIEFILE, "cookie.txt");
-        curl_setopt($curl, CURLOPT_COOKIEJAR, "cookie.txt");
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
         $result = json_decode(curl_exec($curl));
-
         curl_close($curl);
-
-            $array_with_data = [];
-//            for ($i = 0; $i <= 9; $i++) {
-//                $array_with_data[$i]['url'] = $result->response->docs[$i]->web_url;
-//                $array_with_data[$i]['content'] = $result->response->docs[$i]->snippet;
-//                $array_with_data[$i]['pub_date'] = $result->response->docs[$i]->pub_date;
-//                $array_with_data[$i]['title'] =  $result->response->docs[$i]->headline->main;
-//                if ($result->response->docs[$i]->multimedia != null) {
-//                    $array_with_data[$i]['thumbnail_url'] = $result->response->docs[$i]->multimedia;;
-//                } else {
-//                    $array_with_data[$i]['thumbnail_url'] = "";
-//                }
-//            }
-//            var_dump($array_with_data);
-            return $result;
+        return $result;
     }
 
     public function createArticles() {
@@ -70,22 +53,21 @@ class NyTimesArticle implements NyTimesMention
         for($i = 0; $i <= 9; $i++) {
 
             if ($this->searchArticles()->response->docs[$i]->multimedia != null) {
-                $array_with_data[$i]['thumbnail_url'] = $this->searchArticles()->response->docs[$i]->multimedia;
+                $array_with_data[$i]['thumbnail_url'] = $this->searchArticles()->response->docs[$i]->multimedia[2]->url;
             } else {
                 $array_with_data[$i]['thumbnail_url'] = "";
             }
 
             $new_article = new NyTimesCollection();
-            $new_article -> addArticle(new NyTimesArticle(
+            $new_article = new NyTimesArticle(
                 $this->searchArticles()->response->docs[$i]->web_url,
                 $this->searchArticles()->response->docs[$i]->snippet,
                 $this->searchArticles()->response->docs[$i]->pub_date,
                 $this->searchArticles()->response->docs[$i]->headline->main,
                 $array_with_data[$i]['thumbnail_url']
-            ));
+            );
             var_dump($new_article);
         }
-
     }
 
 
