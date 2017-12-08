@@ -1,14 +1,6 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: mejdzor
- * Date: 02.12.2017
- * Time: 22:32
- */
-
 require_once "NyTimesMention.php";
-require_once "NyTimesCollection.php";
 
 class NyTimesArticle implements NyTimesMention
 {
@@ -34,77 +26,34 @@ class NyTimesArticle implements NyTimesMention
        return $this->url . " " . $this->title . " " . $this->pub_date . " " . $this->content . " " . $this->thumbnail_url;
     }
 
-    public function searchArticles()
-    {
-
-        $curl = curl_init();
-        $phrase = $_POST['phrase'];
-        $url = "https://query.nytimes.com/svc/add/v1/sitesearch.json?q=" . $phrase . "&page=2&facet=true";
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
-        $result = json_decode(curl_exec($curl));
-        curl_close($curl);
-        return $result;
-    }
-
-    public function createArticles() {
-        $array_with_data = [];
-        $new_article = new NyTimesCollection();
-        for($i = 0; $i <= 9; $i++) {
-
-            if ($this->searchArticles()->response->docs[$i]->multimedia != null) {
-                $array_with_data[$i]['thumbnail_url'] = $this->searchArticles()->response->docs[$i]->multimedia[2]->url;
-            } else {
-                $array_with_data[$i]['thumbnail_url'] = "";
-            }
-            $new_article -> addArticle(new NyTimesArticle(
-                $this->searchArticles()->response->docs[$i]->web_url,
-                $this->searchArticles()->response->docs[$i]->snippet,
-                $this->searchArticles()->response->docs[$i]->pub_date,
-                $this->searchArticles()->response->docs[$i]->headline->main,
-                $array_with_data[$i]['thumbnail_url']
-            ));
-        }
-        var_dump($new_article);
-        return $new_article;
-    }
-
-
     public function getUrl()
     {
-
+        return $this->url;
     }
 
     public function getTitle()
     {
-        // TODO: Implement getTitle() method.
+        return $this->title;
     }
 
     public function getCreatedAt()
     {
-        // TODO: Implement getCreatedAt() method.
+        return $this->pub_date;
     }
 
     public function getContent()
     {
-        // TODO: Implement getContent() method.
+        return $this->content;
     }
 
     public function getThumbnail()
     {
-        // TODO: Implement getThumbnail() method.
+        return $this->thumbnail_url;
     }
 
 }
 
 
-
-//$obama = new NyTimesArticle("1", "sada", "sadad", "dasdsad", "sadasd");
-//$obama ->searchArticles();
-$obama2 = new NyTimesArticle("1", "sada", "sadad", "dasdsad", "sadasd");
-$obama2->createArticles();
-//var_dump($obama2);
 
 
 

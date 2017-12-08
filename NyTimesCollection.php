@@ -10,40 +10,22 @@ require_once "NyTimesArticle.php";
 
 class NyTimesCollection
 {
-    private $articles = [];
+    public $articles = [];
 
-    public function addArticle($obj, $key = null)
+    public function addArticle($url, $title, $pub_date, $content, $thumbnail_url)
     {
-        if ($key == null) {
-            $this->articles[] = $obj;
-    }
-    else {
-            if (isset ($this->articles[$key])) {
-                throw new KeyInUseException("Key $key already in use.");
-            }
-            else {
-                $this->articles[$key] = $obj;
-            }
-        }
+        $this->articles[] = new NyTimesArticle($url, $title, $pub_date, $content, $thumbnail_url);
     }
 
-    public function deleteItem($key)
+    public function getItem($id)
     {
-
+        return $this->articles[$id];
     }
 
-    public function getItem($key)
+    public function getAll()
     {
-
+        return $this->articles;
     }
 
-    public function keys() {
-        return array_keys($this->articles);
-    }
-
-    public function length()
-    {
-        return count($this->articles);
-    }
 }
 
