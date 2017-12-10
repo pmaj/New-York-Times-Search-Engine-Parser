@@ -10,7 +10,7 @@ require_once "NyTimesArticle.php";
 
 class NyTimesCollection
 {
-    public $articles = [];
+    private $articles = [];
 
     public function addArticle($url, $title, $pub_date, $content, $thumbnail_url)
     {
@@ -26,6 +26,5 @@ class NyTimesCollection
     {
         return $this->articles;
     }
-
 }
 

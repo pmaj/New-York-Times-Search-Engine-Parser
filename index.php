@@ -4,23 +4,18 @@ require_once "NyTimesCollection.php";
 
 const MAX_PAGES = 10;
 
-
 $phrase = $argv[1];
-$url = "https://query.nytimes.com/svc/add/v1/sitesearch.json?q=%s&page=%s&facet=true&newest";
-
-
+$url = "https://query.nytimes.com/svc/add/v1/sitesearch.json?q=%s&page=%s&facet=true&sort=newest";
 
 $curl = curl_init();
-
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
 
 $articlesCollection = new NyTimesCollection();
 
-for ($i = 1; $i <= MAX_PAGES; $i++) {
+for ($i = 0; $i <= MAX_PAGES - 1; $i++) {
     curl_setopt($curl, CURLOPT_URL, sprintf($url, $phrase, $i));
     $articles = json_decode(curl_exec($curl));
-
     for($j = 0; $j <= (MAX_PAGES - 1); $j++) {
         $articlesCollection->addArticle(
             $articles->response->docs[$j]->web_url,
@@ -29,7 +24,6 @@ for ($i = 1; $i <= MAX_PAGES; $i++) {
             $articles->response->docs[$j]->snippet,
             empty($articles->response->docs[$j]->multimedia) ? null : $thumbnailUrl = $articles->response->docs[$j]->multimedia[2]->url);
     }
-
 }
 
 curl_close($curl);
@@ -39,8 +33,10 @@ foreach ($articlesCollection->getAll() as $article) {
     echo $article->content . PHP_EOL;
     echo $article->pub_date . PHP_EOL;
     echo $article->url . PHP_EOL;
-    echo $article->thumbnail_url . PHP_EOL;
+    echo empty($article->thumbnail_url) ? null : "https://static01.nyt.com/" . $article->thumbnail_url . PHP_EOL;
 }
+
+
 
 
 

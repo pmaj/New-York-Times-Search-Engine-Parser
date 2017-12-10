@@ -21,11 +21,6 @@ class NyTimesArticle implements NyTimesMention
         $this->thumbnail_url = $thumbnail_url;
     }
 
-    public function __toString()
-    {
-       return $this->url . " " . $this->title . " " . $this->pub_date . " " . $this->content . " " . $this->thumbnail_url;
-    }
-
     public function getUrl()
     {
         return $this->url;
